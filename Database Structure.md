@@ -1,0 +1,33 @@
+## Urban Issues - Database
+
+- **User**
+  - Username - string
+  - Email - string
+  - Password - string
+  - List of Issues 
+  - List of comments
+  - Favorite city - city
+- **Category**
+  - Name - string
+  - List of Issues
+- **City**
+  - Name - string
+  - Latitude - number
+  - Longitude - number
+- **Comment**
+  - Content - string
+  - User
+  - Issue
+- **Issues**
+  - Title - string
+  - Description - string
+  - User
+  - Category
+  - City
+  - Rating/Priority
+  - List Comments
+  - List Images
+- **Image**
+  - Name - string
+  - Extension - string ?
+  - Content -  byte[]
