@@ -3,13 +3,14 @@ package com.example.telerik.urbanissues.models;
 import android.graphics.Bitmap;
 
 import com.telerik.everlive.sdk.core.EverliveApp;
+import com.telerik.everlive.sdk.core.EverliveAppSettings;
 import com.telerik.everlive.sdk.core.model.system.User;
 
 import java.util.Hashtable;
 import java.util.UUID;
 
 public class BaseViewModel {
-    public static EverliveApp EverliveAPP;
+    public static EverliveApp myAppTest;
 
     private Hashtable<UUID, Bitmap> pictures = new Hashtable<UUID, Bitmap>();
     private Hashtable<UUID, MyUser> users = new Hashtable<UUID, MyUser>();
@@ -51,12 +52,23 @@ public class BaseViewModel {
     }
 
     private BaseViewModel() {
+        initialize();
     }
 
     public static BaseViewModel getInstance() {
         if (instance == null) {
             instance = new BaseViewModel();
+            initialize();
         }
         return instance;
+    }
+
+    private static void initialize() {
+        String appId = "tmieglwbnjbr358i";
+        EverliveAppSettings appSettings = new EverliveAppSettings();
+        appSettings.setAppId(appId);
+        appSettings.setUseHttps(true);
+
+        myAppTest = new EverliveApp(appSettings);
     }
 }

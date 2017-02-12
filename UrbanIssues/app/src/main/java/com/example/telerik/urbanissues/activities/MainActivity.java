@@ -19,10 +19,12 @@ import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 
 import java.util.ArrayList;
 
+import static com.example.telerik.urbanissues.common.Constants.APP_ID;
+
 
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
 
-    EverliveApp myApp;
+    public EverliveApp myApp;
 
     private ViewPager viewPager;
     private TabsPagerAdapter mAdapter;
@@ -40,55 +42,63 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
         Boolean isUserRegistered = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                 .getBoolean("isUserRegistered", false);
+        Boolean isUserLoggedIn = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getBoolean("isUserLoggedIn", false);
+
 
         if (!isUserRegistered) {
-            //show start activity
-
             startActivity(new Intent(MainActivity.this, RegisterActivity.class));
             Toast.makeText(MainActivity.this, "User Not Registered", Toast.LENGTH_LONG)
                     .show();
         }
-
-
-        // Initilization
-        viewPager = (ViewPager) findViewById(R.id.pager);
-        actionBar = getSupportActionBar();
-        mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
-
-        viewPager.setAdapter(mAdapter);
-        actionBar.setHomeButtonEnabled(false);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-        // Adding Tabs
-        for (String tab_name : tabs) {
-            actionBar.addTab(actionBar.newTab().setText(tab_name)
-                    .setTabListener(this));
+        else if (!isUserLoggedIn) {
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            Toast.makeText(MainActivity.this, "User Not Logged In", Toast.LENGTH_LONG)
+                    .show();
         }
-    /**
-     * on swiping the viewpager make respective tab selected
-     * */
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        else {
 
-            @Override
-            public void onPageSelected(int position) {
-                // on changing the page
-                // make respected tab selected
-                actionBar.setSelectedNavigationItem(position);
-            }
 
-            @Override
-            public void onPageScrolled(int arg0, float arg1, int arg2) {
-            }
+            // Initilization
+            viewPager = (ViewPager) findViewById(R.id.pager);
+            actionBar = getSupportActionBar();
+            mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
-            @Override
-            public void onPageScrollStateChanged(int arg0) {
+            viewPager.setAdapter(mAdapter);
+            actionBar.setHomeButtonEnabled(false);
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+            // Adding Tabs
+            for (String tab_name : tabs) {
+                actionBar.addTab(actionBar.newTab().setText(tab_name)
+                        .setTabListener(this));
             }
-        });
+            /**
+             * on swiping the viewpager make respective tab selected
+             * */
+            viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+                @Override
+                public void onPageSelected(int position) {
+                    // on changing the page
+                    // make respected tab selected
+                    actionBar.setSelectedNavigationItem(position);
+                }
+
+                @Override
+                public void onPageScrolled(int arg0, float arg1, int arg2) {
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int arg0) {
+                }
+            });
+        }
     }
 
 
     private void initializeSdk() {
-        String appId = "tmieglwbnjbr358i";
+        String appId = APP_ID;
         EverliveAppSettings appSettings = new EverliveAppSettings();
         appSettings.setAppId(appId);
         appSettings.setUseHttps(true);

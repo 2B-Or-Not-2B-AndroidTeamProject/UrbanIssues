@@ -14,14 +14,17 @@ import com.example.telerik.urbanissues.R;
 import com.example.telerik.urbanissues.models.BaseViewModel;
 import com.example.telerik.urbanissues.models.MyUser;
 import com.telerik.everlive.sdk.core.EverliveApp;
+import com.telerik.everlive.sdk.core.EverliveAppSettings;
 import com.telerik.everlive.sdk.core.model.system.User;
 import com.telerik.everlive.sdk.core.query.definition.UserSecretInfo;
 import com.telerik.everlive.sdk.core.result.RequestResult;
 import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 
+import static com.example.telerik.urbanissues.common.Constants.APP_ID;
+
 public class RegisterActivity  extends Activity implements View.OnClickListener {
 
-    EverliveApp myapp2;
+    EverliveApp myApp;
 
     private EditText name;
     private EditText email;
@@ -59,6 +62,7 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_register : {
+                this.initializeSdk();
                 this.onRegisterClick();
                 break;
             }
@@ -87,7 +91,7 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
         UserSecretInfo secretInfo = new UserSecretInfo();
         secretInfo.setPassword(password.getText().toString());
 
-        myapp2.workWith().
+        myApp.workWith().
                 users(MyUser.class).
                 create(user, secretInfo).
                 executeAsync(new RequestResultCallbackAction() {
@@ -98,6 +102,12 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
                         if (requestResult.getSuccess()) {
                             message = "User " + user.getDisplayName() + " created successfully.";
                             hasErrors = false;
+                            getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                                    .putBoolean("isUserRegistered", true).commit();
+                            getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                                    .putString("username", username.getText().toString()).commit();
+                            getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                                    .putString("password", password.getText().toString()).commit();
                         } else {
                             message = requestResult.getError().getMessage();
                             hasErrors = true;
@@ -120,18 +130,7 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
                     }
                 });
     }
-/*
-    public RequestResult registerUser(EverliveApp app, String username, String password, String name, String email)
-    {
-        user.setUsername(username);
-        user.setEmail(email);
-        user.setDisplayName(name);
 
-        secretInfo.setPassword(password);
-        System.out.println(user);
-        return app.workWith().users().create(user, secretInfo).executeSync();
-    }
-*/
     private void updateRegisterButton() {
         if (this.name.getText().length() > 0 &&
                 this.username.getText().length() > 0 &&
@@ -157,5 +156,14 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
         public void afterTextChanged(Editable s) {
             updateRegisterButton();
         }
+    }
+
+    private void initializeSdk() {
+        String appId = APP_ID;
+        EverliveAppSettings appSettings = new EverliveAppSettings();
+        appSettings.setAppId(appId);
+        appSettings.setUseHttps(true);
+
+        myApp = new EverliveApp(appSettings);
     }
 }
