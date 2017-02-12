@@ -6,9 +6,11 @@ import android.content.DialogInterface;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.telerik.urbanissues.R;
 import static com.example.telerik.urbanissues.common.Constants.APP_ID;
@@ -19,6 +21,8 @@ import com.telerik.everlive.sdk.core.result.RequestResult;
 import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 
 public class LoginActivity extends Activity implements View.OnClickListener {
+
+    private Boolean exit = false;
 
     private EditText username;
     private EditText password;
@@ -41,6 +45,41 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         findViewById(R.id.login_register).setOnClickListener(this);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (exit) {
+            finish(); // finish activity
+        } else {
+            Toast.makeText(this, "Press Back again to Exit.",
+                    Toast.LENGTH_SHORT).show();
+            exit = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exit = false;
+                }
+            }, 3 * 1000);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_login : {
+                this.onLogin();
+                break;
+            }
+            case R.id.login_register :  {
+                Intent intent_register = new Intent(this, RegisterActivity.class);
+                intent_register.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent_register.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); // clears all previous activities task
+                finish(); // destroy current activity..
+                startActivity(intent_register);
+                break;
+            }
+        }
+    }
+
     private void checkAppSettings(boolean showMessage) {
         StringBuilder sb = new StringBuilder();
         String EOL = "\r\n";
@@ -61,21 +100,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         alertDialogBuilder.create().show();
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_login : {
-                this.onLogin();
-                break;
-            }
-            case R.id.login_register :  {
-                Intent i = new Intent(this, RegisterActivity.class);
-                startActivity(i);
-                break;
-            }
-        }
-    }
-
     public void onLogin() {
         connectionProgressDialog.show();
         BaseViewModel.myAppTest.workWith().
@@ -85,6 +109,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     @Override
                     public void invoke(RequestResult<AccessToken> accessTokenRequestResult) {
                         if (accessTokenRequestResult.getSuccess()) {
+                            getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                                    .putBoolean("isUserRegistered", true).commit();
                             getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
                                     .putBoolean("isUserLoggedIn", true).commit();
                             getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
@@ -107,9 +133,11 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     public static void startMainActivity(Activity activity) {
-        Intent i = new Intent(activity, MainActivity.class);
-        activity.startActivity(i);
+        Intent intent_main = new Intent(activity, MainActivity.class);
+        intent_main.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent_main.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); // clears all previous activities task
+        activity.finish(); // destroy current activity..
+        activity.startActivity(intent_main);
     }
-
 }
 

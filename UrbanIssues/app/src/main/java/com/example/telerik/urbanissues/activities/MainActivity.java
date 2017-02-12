@@ -2,6 +2,7 @@ package com.example.telerik.urbanissues.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
@@ -26,13 +27,15 @@ import static com.example.telerik.urbanissues.common.Constants.APP_ID;
 
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
 
+    private Boolean exit = false;
+
     public EverliveApp myApp;
 
     private ViewPager viewPager;
     private TabsPagerAdapter mAdapter;
     private ActionBar actionBar;
     // Tab titles
-    private String[] tabs = { "Issues", "Submit", "My Issues" };
+    private String[] tabs = {"Issues", "Submit", "My Issues"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +52,14 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
 
         if (!isUserRegistered) {
-            startActivity(new Intent(MainActivity.this, RegisterActivity.class));
-            Toast.makeText(MainActivity.this, "User Not Registered", Toast.LENGTH_LONG)
-                    .show();
-        }
-        else if (!isUserLoggedIn) {
+            Intent intent_register = new Intent(MainActivity.this, RegisterActivity.class);
+            intent_register.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent_register.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); // clears all previous activities task
+            finish(); // destroy current activity..
+            startActivity(intent_register);
+            /*Toast.makeText(MainActivity.this, "User Not Registered", Toast.LENGTH_LONG)
+                    .show();*/
+        } else if (!isUserLoggedIn) {
             String sp_username = "";
             String sp_password = "";
 
@@ -80,11 +86,14 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
                             }
                         });
             } else {
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                Intent intent_login = new Intent(MainActivity.this, LoginActivity.class);
+                intent_login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent_login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); // clears all previous activities task
+                finish(); // destroy current activity..
+                startActivity(intent_login);
                 Toast.makeText(MainActivity.this, "User Not Logged In", Toast.LENGTH_LONG).show();
             }
-        }
-        else {
+        } else {
             // Initilization
             viewPager = (ViewPager) findViewById(R.id.pager);
             actionBar = getSupportActionBar();
@@ -122,31 +131,21 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         }
     }
 
-
-    private void initializeSdk() {
-        String appId = APP_ID;
-        EverliveAppSettings appSettings = new EverliveAppSettings();
-        appSettings.setAppId(appId);
-        appSettings.setUseHttps(true);
-
-        myApp = new EverliveApp(appSettings);
-    }
-
-    public void getAllEntries() {
-        myApp.workWith().data(Issue.class).getAll().executeAsync(new RequestResultCallbackAction<ArrayList<Issue>>() {
-
-            @Override
-            public void invoke(RequestResult<ArrayList<Issue>> requestResult) {
-                if(requestResult.getSuccess()) {
-                    for (Issue res  : requestResult.getValue()) {
-                        System.out.println("===== Success: " + res.getTitle() + " " + res.getDescription());
-                    }
+    @Override
+    public void onBackPressed() {
+        if (exit) {
+            finish(); // finish activity
+        } else {
+            Toast.makeText(this, "Press Back again to Exit.",
+                    Toast.LENGTH_SHORT).show();
+            exit = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exit = false;
                 }
-                else {
-                    System.out.println("===== Error: " + requestResult.getError().toString());
-                }
-            }
-        });
+            }, 3 * 1000);
+        }
     }
 
     @Override
@@ -162,5 +161,30 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     @Override
     public void onTabReselected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {
 
+    }
+
+    private void initializeSdk() {
+        String appId = APP_ID;
+        EverliveAppSettings appSettings = new EverliveAppSettings();
+        appSettings.setAppId(appId);
+        appSettings.setUseHttps(true);
+
+        myApp = new EverliveApp(appSettings);
+    }
+
+    public void getAllEntries() {
+        myApp.workWith().data(Issue.class).getAll().executeAsync(new RequestResultCallbackAction<ArrayList<Issue>>() {
+
+            @Override
+            public void invoke(RequestResult<ArrayList<Issue>> requestResult) {
+                if (requestResult.getSuccess()) {
+                    for (Issue res : requestResult.getValue()) {
+                        System.out.println("===== Success: " + res.getTitle() + " " + res.getDescription());
+                    }
+                } else {
+                    System.out.println("===== Error: " + requestResult.getError().toString());
+                }
+            }
+        });
     }
 }

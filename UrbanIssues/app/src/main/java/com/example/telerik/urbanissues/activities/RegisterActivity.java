@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.telerik.urbanissues.R;
 import com.example.telerik.urbanissues.models.BaseViewModel;
@@ -23,6 +25,8 @@ import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 import static com.example.telerik.urbanissues.common.Constants.APP_ID;
 
 public class RegisterActivity  extends Activity implements View.OnClickListener {
+
+    private Boolean exit = false;
 
     EverliveApp myApp;
 
@@ -56,7 +60,6 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
         findViewById(R.id.register_login).setOnClickListener(this);
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -66,10 +69,30 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
                 break;
             }
             case R.id.register_login : {
-                Intent i = new Intent(this, LoginActivity.class);
-                startActivity(i);
+                Intent intent_login = new Intent(this, LoginActivity.class);
+                intent_login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent_login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); // clears all previous activities task
+                finish(); // destroy current activity..
+                startActivity(intent_login);
                 break;
             }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (exit) {
+            finish(); // finish activity
+        } else {
+            Toast.makeText(this, "Press Back again to Exit.",
+                    Toast.LENGTH_SHORT).show();
+            exit = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exit = false;
+                }
+            }, 3 * 1000);
         }
     }
 
@@ -111,9 +134,11 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         if (!hasErrors) {
-                                            Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
-                                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                            startActivity(i);
+                                            Intent intent_login = new Intent(RegisterActivity.this, LoginActivity.class);
+                                            intent_login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            intent_login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); // clears all previous activities task
+                                            finish(); // destroy current activity..
+                                            startActivity(intent_login);
                                         }
                                     }
                                 });
