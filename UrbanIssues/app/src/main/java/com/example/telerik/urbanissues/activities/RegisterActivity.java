@@ -32,9 +32,6 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
     private EditText password;
     private Button registerButton;
 
-    private User user = new User();
-    private UserSecretInfo secretInfo = new UserSecretInfo();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +52,8 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
 
         this.registerButton = (Button) findViewById(R.id.btn_register);
         this.registerButton.setOnClickListener(this);
+
+        findViewById(R.id.register_login).setOnClickListener(this);
     }
 
 
@@ -66,6 +65,11 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
                 this.onRegisterClick();
                 break;
             }
+            case R.id.register_login : {
+                Intent i = new Intent(this, LoginActivity.class);
+                startActivity(i);
+                break;
+            }
         }
     }
 
@@ -75,15 +79,7 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
         System.out.println(password.getText().toString());
         System.out.println(name.getText().toString());
         System.out.println(email.getText().toString());
-/*
-        registerUser
-                (
-                        myapp,
-                username.getText().toString(),
-                password.getText().toString(),
-                name.getText().toString(),
-                email.getText().toString());
-        */
+
         final User user = new User();
         user.setUsername(username.getText().toString());
         user.setEmail(email.getText().toString());
@@ -104,10 +100,6 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
                             hasErrors = false;
                             getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
                                     .putBoolean("isUserRegistered", true).commit();
-                            getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
-                                    .putString("username", username.getText().toString()).commit();
-                            getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
-                                    .putString("password", password.getText().toString()).commit();
                         } else {
                             message = requestResult.getError().getMessage();
                             hasErrors = true;

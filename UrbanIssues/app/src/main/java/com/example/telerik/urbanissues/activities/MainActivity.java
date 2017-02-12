@@ -10,10 +10,12 @@ import android.widget.Toast;
 
 import com.example.telerik.urbanissues.R;
 import com.example.telerik.urbanissues.adapters.TabsPagerAdapter;
+import com.example.telerik.urbanissues.models.BaseViewModel;
 import com.example.telerik.urbanissues.models.Issue;
 
 import com.telerik.everlive.sdk.core.EverliveApp;
 import com.telerik.everlive.sdk.core.EverliveAppSettings;
+import com.telerik.everlive.sdk.core.model.system.AccessToken;
 import com.telerik.everlive.sdk.core.result.RequestResult;
 import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 
@@ -52,13 +54,37 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
                     .show();
         }
         else if (!isUserLoggedIn) {
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            Toast.makeText(MainActivity.this, "User Not Logged In", Toast.LENGTH_LONG)
-                    .show();
+            String sp_username = "";
+            String sp_password = "";
+
+            if (getSharedPreferences("PREFERENCE", MODE_PRIVATE).contains("username") &&
+                    getSharedPreferences("PREFERENCE", MODE_PRIVATE).contains("password")) {
+                sp_username = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("username", "");
+                sp_password = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getString("password", "");
+            }
+
+            if (sp_username != "" && sp_password != "") {
+                myApp.workWith().
+                        authentication().
+                        login(sp_username, sp_password).
+                        executeAsync(new RequestResultCallbackAction<AccessToken>() {
+                            @Override
+                            public void invoke(RequestResult<AccessToken> accessTokenRequestResult) {
+                                if (accessTokenRequestResult.getSuccess()) {
+                                    getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                                            .putBoolean("isUserLoggedIn", true).commit();
+                                } else {
+                                    final String errorMessage = accessTokenRequestResult.getError().getMessage();
+                                    System.out.println(errorMessage);
+                                }
+                            }
+                        });
+            } else {
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                Toast.makeText(MainActivity.this, "User Not Logged In", Toast.LENGTH_LONG).show();
+            }
         }
         else {
-
-
             // Initilization
             viewPager = (ViewPager) findViewById(R.id.pager);
             actionBar = getSupportActionBar();
@@ -117,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
                     }
                 }
                 else {
-                    System.out.println("===== Errror: " + requestResult.getError().toString());
+                    System.out.println("===== Error: " + requestResult.getError().toString());
                 }
             }
         });
