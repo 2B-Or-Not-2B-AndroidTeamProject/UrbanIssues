@@ -1,10 +1,12 @@
 package com.example.telerik.urbanissues.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.example.telerik.urbanissues.R;
 import com.example.telerik.urbanissues.adapters.TabsPagerAdapter;
@@ -35,6 +37,18 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
         initializeSdk();
         getAllEntries();
+
+        Boolean isUserRegistered = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getBoolean("isUserRegistered", false);
+
+        if (!isUserRegistered) {
+            //show start activity
+
+            startActivity(new Intent(MainActivity.this, RegisterActivity.class));
+            Toast.makeText(MainActivity.this, "User Not Registered", Toast.LENGTH_LONG)
+                    .show();
+        }
+
 
         // Initilization
         viewPager = (ViewPager) findViewById(R.id.pager);

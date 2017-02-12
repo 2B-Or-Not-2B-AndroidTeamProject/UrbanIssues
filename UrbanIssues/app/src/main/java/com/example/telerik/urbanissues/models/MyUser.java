@@ -9,11 +9,11 @@ import java.util.UUID;
 
 @ServerType("Users")
 public class MyUser extends User {
-
+/*
     @ServerProperty("Username")
     private String username;
 
- /*
+
     @ServerProperty("Picture")
     private UUID pictureId;
 
