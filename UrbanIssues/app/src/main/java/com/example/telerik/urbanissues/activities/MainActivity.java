@@ -1,5 +1,6 @@
 package com.example.telerik.urbanissues.activities;
 
+import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         setContentView(R.layout.activity_main);
 
         initializeSdk();
-        getAllEntries();
+       // getAllEntries();
 
         Boolean isUserRegistered = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                 .getBoolean("isUserRegistered", false);
@@ -182,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
                         System.out.println("===== Success: " + res.getTitle() + " " + res.getDescription());
                     }
                 } else {
-                    System.out.println("===== Error: " + requestResult.getError().toString());
+                    System.out.println("===== Error Main: " + requestResult.getError().toString());
                 }
             }
         });

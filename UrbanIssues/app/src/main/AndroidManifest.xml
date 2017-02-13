@@ -24,6 +24,7 @@
         </activity>
         <activity android:name=".activities.RegisterActivity" android:screenOrientation="sensorPortrait" />
         <activity android:name=".activities.LoginActivity" android:screenOrientation="sensorPortrait"/>
+        <activity android:name=".activities.IssuesActivity" android:screenOrientation="sensorPortrait"/>
     </application>
 
 </manifest>

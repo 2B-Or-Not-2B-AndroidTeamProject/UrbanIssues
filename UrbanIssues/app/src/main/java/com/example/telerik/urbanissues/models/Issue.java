@@ -18,8 +18,8 @@ public class Issue extends DataItem {
     private String description;
 
     @ServerProperty("Rating")
-    private String rating;
-
+    private int rating;
+/*
     @ServerProperty("Category")
     private Category category;
 
@@ -31,7 +31,7 @@ public class Issue extends DataItem {
 
     @ServerProperty("Images")
     private ArrayList<UUID> images;
-
+*/
     public String getTitle() {
         return title;
     }
@@ -48,14 +48,14 @@ public class Issue extends DataItem {
         this.description = description;
     }
 
-    public String getRating() {
+    public int getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(int rating) {
         this.rating = rating;
     }
-
+/*
     public Category getCategory() { return category; }
 
     public void setCategory(Category category) { this.category = category; }
@@ -71,5 +71,6 @@ public class Issue extends DataItem {
     public ArrayList<UUID> getImages() { return images; }
 
     public void setImages(ArrayList<UUID> images) { this.images = images; }
+    */
 }
 

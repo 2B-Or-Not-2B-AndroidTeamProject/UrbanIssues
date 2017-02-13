@@ -13,17 +13,17 @@ public class BaseViewModel {
     public static EverliveApp myAppTest;
 
     private Hashtable<UUID, Bitmap> pictures = new Hashtable<UUID, Bitmap>();
-    private Hashtable<UUID, MyUser> users = new Hashtable<UUID, MyUser>();
+    private Hashtable<UUID, User> users = new Hashtable<UUID, User>();
     private User loggedUser;
     private String selectedAccount;
 
     private static BaseViewModel instance;
 
-    public void addUser(MyUser user) {
+    public void addUser(User user) {
         this.users.put(user.getId(), user);
     }
 
-    public MyUser getUserById(UUID id) {
+    public User getUserById(UUID id) {
         return this.users.get(id);
     }
 
@@ -39,7 +39,7 @@ public class BaseViewModel {
         return loggedUser;
     }
 
-    public void setLoggedUser(MyUser loggedUser) {
+    public void setLoggedUser(User loggedUser) {
         this.loggedUser = loggedUser;
     }
 

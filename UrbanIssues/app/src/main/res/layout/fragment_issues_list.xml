@@ -5,7 +5,7 @@
     android:layout_height="fill_parent"
     android:background="#34495e">
     <TextView
-        android:id="@+id/list_issues_listLabel"
+        android:id="@+id/fragment_issues_listLabel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -16,7 +16,7 @@
         android:layout_marginBottom="15dp"
         />
     <ListView
-        android:id="@+id/list_issues_listView"
+        android:id="@+id/fragment_issues_listView"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_below="@id/list_issues_listLabel"
