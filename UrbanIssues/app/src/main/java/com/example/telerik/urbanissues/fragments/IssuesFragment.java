@@ -1,5 +1,6 @@
 package com.example.telerik.urbanissues.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -50,6 +51,12 @@ public class IssuesFragment extends Fragment {
         for (Issue issue : issues) {
             System.out.println(issue);
         }
+        ListView listView = (ListView) rootView.findViewById(R.id.list_issues_listView);
+
+        this.issues = new ArrayList<Issue>();
+        this.issueAdapter = new IssueAdapter(this.getActivity(), R.layout.fragment_issues_row, issues);
+
+        listView.setAdapter(this.issueAdapter);
 
         return rootView;
     }
