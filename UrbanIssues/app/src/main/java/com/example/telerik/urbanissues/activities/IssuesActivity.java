@@ -47,7 +47,7 @@ public class IssuesActivity extends AppCompatActivity {
 
         initializeSdk();
 
-        ListView listView = (ListView) findViewById(R.id.list_issues_listView);
+        ListView listView = (ListView) findViewById(R.id.list);
         this.issues = new ArrayList<Issue>();
         this.issueAdapter = new IssueAdapter(this, R.layout.fragment_issues_row, issues);
 

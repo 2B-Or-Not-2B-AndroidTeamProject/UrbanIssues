@@ -36,18 +36,19 @@ public class IssueAdapter extends ArrayAdapter<Issue> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View row = convertView;
+        LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+        View row = inflater.inflate(layoutResourceId, parent, false);
         IssueHolder holder = null;
 
         if (row == null) {
-            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+            //LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new IssueHolder();
             //holder.issueImage = (ImageView) row.findViewById(R.id.issue_image);
-            holder.issueText = (TextView) row.findViewById(R.id.issue_content);
+            holder.issueText = (TextView) row.findViewById(R.id.issue_desription);
             //holder.username = (TextView) row.findViewById(R.id.issue_username);
-            holder.issueCreateDate = (TextView) row.findViewById(R.id.issue_createDate);
+            holder.issueTitle = (TextView) row.findViewById(R.id.issue_title);
 
             row.setTag(holder);
         } else {
@@ -57,8 +58,8 @@ public class IssueAdapter extends ArrayAdapter<Issue> {
         Issue issue = this.issues.get(position);
         if (issue != null) {
             holder.issueText.setText(issue.getDescription());
-            DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
-            holder.issueCreateDate.setText(dateFormat.format(issue.getCreatedAt()).toUpperCase());
+            //DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
+            holder.issueTitle.setText(issue.getTitle());
             /*if (issue.getCreatedBy() != null) {
                 BaseViewModel.myAppTest.workWith().users().getById(issue.getCreatedBy()).
                         executeAsync(new MyRequestResultCallbackAction(holder, ((Activity) context).getCurrentFocus()));
@@ -75,7 +76,7 @@ public class IssueAdapter extends ArrayAdapter<Issue> {
         //private ImageView issueImage;
         private TextView issueText;
         //private TextView username;
-        private TextView issueCreateDate;
+        private TextView issueTitle;
     }
 
     class MyRequestResultCallbackAction extends RequestResultCallbackAction {
