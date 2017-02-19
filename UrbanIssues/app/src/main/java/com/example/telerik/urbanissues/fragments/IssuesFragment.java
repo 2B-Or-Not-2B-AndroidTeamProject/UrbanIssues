@@ -23,6 +23,7 @@ import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 
 import java.util.ArrayList;
 
+import static com.example.telerik.urbanissues.activities.MainActivity.urbanIssuesApp;
 import static com.example.telerik.urbanissues.common.Constants.APP_ID;
 
 public class IssuesFragment extends Fragment {
@@ -42,8 +43,6 @@ public class IssuesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        BaseViewModel.initialize(BaseViewModel.urbanIssuesApp);
 
         View rootView = inflater.inflate(R.layout.fragment_issues_list, container, false);
 /*
@@ -72,7 +71,7 @@ public class IssuesFragment extends Fragment {
     }
 
     private void loadIssues(final ListView target, final IssuesFragment issuesFragment) {
-        BaseViewModel.urbanIssuesApp.workWith().
+        urbanIssuesApp.workWith().
                 data(Issue.class).
                 getAll().
                 executeAsync(new RequestResultCallbackAction<ArrayList<Issue>>() {

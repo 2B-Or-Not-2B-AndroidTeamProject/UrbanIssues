@@ -22,7 +22,7 @@ public class IssuesActivity extends AppCompatActivity implements ActionBar.TabLi
     private TabsPagerAdapter mAdapter;
     private ActionBar actionBar;
     // Tab titles
-    private String[] tabs = {"Issues", "Submit", "My Issues"};
+    private String[] tabs = {"Issues", "Submit", "My Profile"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

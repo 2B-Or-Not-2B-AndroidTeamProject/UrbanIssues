@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.telerik.urbanissues.R;
+
+import static com.example.telerik.urbanissues.activities.MainActivity.urbanIssuesApp;
 import static com.example.telerik.urbanissues.common.Constants.APP_ID;
 import  com.example.telerik.urbanissues.models.BaseViewModel;
 import com.telerik.everlive.sdk.core.EverliveApp;
@@ -32,8 +34,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        BaseViewModel.initialize(BaseViewModel.urbanIssuesApp);
 
         connectionProgressDialog = new ProgressDialog(this);
         connectionProgressDialog.setMessage("Logging in ...");
@@ -91,7 +91,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     public void onLogin() {
         connectionProgressDialog.show();
-        BaseViewModel.urbanIssuesApp.workWith().
+        urbanIssuesApp.workWith().
                 authentication().
                 login(this.username.getText().toString(), this.password.getText().toString()).
                 executeAsync(new RequestResultCallbackAction<AccessToken>(){

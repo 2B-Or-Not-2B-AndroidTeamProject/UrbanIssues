@@ -24,6 +24,8 @@ import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 
 import java.util.ArrayList;
 
+import static com.example.telerik.urbanissues.activities.MainActivity.urbanIssuesApp;
+
 public class ListIssuesActivity extends AppCompatActivity {
 
     private ArrayList<Issue> issues;
@@ -42,8 +44,6 @@ public class ListIssuesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_issues_list);
 
-        BaseViewModel.initialize(BaseViewModel.urbanIssuesApp);
-
         //ListView listView = (ListView) findViewById(R.id.list);
         //this.issueAdapter = new IssueAdapter(this, R.layout.fragment_issues, issues);
 
@@ -51,7 +51,7 @@ public class ListIssuesActivity extends AppCompatActivity {
 
         this.issues = new ArrayList<>();
 
-        issues = GetIssues(BaseViewModel.urbanIssuesApp);
+        issues = GetIssues(urbanIssuesApp);
         if (this.getIssues() == null) {
             System.out.println("WTF");
         }

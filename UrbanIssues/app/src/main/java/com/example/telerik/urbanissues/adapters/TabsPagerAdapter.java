@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.example.telerik.urbanissues.fragments.IssuesFragment;
-import com.example.telerik.urbanissues.fragments.MyIssuesFragment;
+import com.example.telerik.urbanissues.fragments.MyProfileFragment;
 import com.example.telerik.urbanissues.fragments.SubmitIssueFragment;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter {
@@ -23,7 +23,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
             case 1:
                 return new SubmitIssueFragment();
             case 2:
-                return new MyIssuesFragment();
+                return new MyProfileFragment();
         }
 
         return null;

@@ -9,6 +9,8 @@ import android.widget.Toast;
 import com.example.telerik.urbanissues.R;
 import com.example.telerik.urbanissues.models.BaseViewModel;
 
+import com.telerik.everlive.sdk.core.EverliveApp;
+import com.telerik.everlive.sdk.core.EverliveAppSettings;
 import com.telerik.everlive.sdk.core.model.system.AccessToken;
 import com.telerik.everlive.sdk.core.result.RequestResult;
 import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
@@ -20,6 +22,7 @@ import static com.example.telerik.urbanissues.common.Constants.APP_ID;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static EverliveApp urbanIssuesApp;
     private Boolean exit = false;
 
     @Override
@@ -27,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BaseViewModel.initialize(BaseViewModel.urbanIssuesApp);
+        this.initializeSdk();
 
         Boolean isUserRegistered = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                 .getBoolean("isUserRegistered", false);
@@ -54,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (sp_username != "" && sp_password != "") {
-                BaseViewModel.urbanIssuesApp.workWith().
+                urbanIssuesApp.workWith().
                         authentication().
                         login(sp_username, sp_password).
                         executeAsync(new RequestResultCallbackAction<AccessToken>() {
@@ -101,5 +104,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }, 3 * 1000);
         }
+    }
+
+    private void initializeSdk() {
+        String appId = APP_ID;
+        EverliveAppSettings appSettings = new EverliveAppSettings();
+        appSettings.setAppId(appId);
+        appSettings.setUseHttps(true);
+
+        urbanIssuesApp = new EverliveApp(appSettings);
     }
 }

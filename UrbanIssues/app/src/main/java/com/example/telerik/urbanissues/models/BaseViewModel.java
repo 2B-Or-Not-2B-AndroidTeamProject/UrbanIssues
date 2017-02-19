@@ -12,11 +12,11 @@ import java.util.UUID;
 import static com.example.telerik.urbanissues.common.Constants.APP_ID;
 
 public class BaseViewModel {
-    public static EverliveApp urbanIssuesApp;
+    //public EverliveApp urbanIssuesApp;
 
     private Hashtable<UUID, Bitmap> pictures = new Hashtable<UUID, Bitmap>();
     private Hashtable<UUID, User> users = new Hashtable<UUID, User>();
-    private User loggedUser;
+    private MyUser loggedUser;
     private String selectedAccount;
 
     private static BaseViewModel instance;
@@ -37,11 +37,11 @@ public class BaseViewModel {
         return this.pictures.get(id);
     }
 
-    public User getLoggedUser() {
+    public MyUser getLoggedUser() {
         return loggedUser;
     }
 
-    public void setLoggedUser(User loggedUser) {
+    public void setLoggedUser(MyUser loggedUser) {
         this.loggedUser = loggedUser;
     }
 

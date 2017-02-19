@@ -10,4 +10,14 @@ import java.util.UUID;
 @ServerType("Users")
 public class MyUser extends User {
 
+    @ServerProperty("Picture")
+    private UUID pictureId;
+
+    public UUID getPictureId() {
+        return pictureId;
+    }
+
+    public void setPictureId(UUID pictureId) {
+        this.pictureId = pictureId;
+    }
 }

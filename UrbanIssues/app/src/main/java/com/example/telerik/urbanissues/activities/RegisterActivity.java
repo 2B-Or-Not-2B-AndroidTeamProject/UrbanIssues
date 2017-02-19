@@ -15,10 +15,13 @@ import android.widget.Toast;
 import com.example.telerik.urbanissues.R;
 import com.example.telerik.urbanissues.models.BaseViewModel;
 import com.example.telerik.urbanissues.models.MyUser;
+import com.telerik.everlive.sdk.core.EverliveApp;
 import com.telerik.everlive.sdk.core.model.system.User;
 import com.telerik.everlive.sdk.core.query.definition.UserSecretInfo;
 import com.telerik.everlive.sdk.core.result.RequestResult;
 import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
+
+import static com.example.telerik.urbanissues.activities.MainActivity.urbanIssuesApp;
 
 
 public class RegisterActivity  extends Activity implements View.OnClickListener {
@@ -59,7 +62,6 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_register : {
-                BaseViewModel.initialize(BaseViewModel.urbanIssuesApp);
                 this.onRegisterClick();
                 break;
             }
@@ -105,7 +107,7 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
         UserSecretInfo secretInfo = new UserSecretInfo();
         secretInfo.setPassword(password.getText().toString());
 
-        BaseViewModel.urbanIssuesApp.workWith().
+        urbanIssuesApp.workWith().
                 users(MyUser.class).
                 create(user, secretInfo).
                 executeAsync(new RequestResultCallbackAction() {
