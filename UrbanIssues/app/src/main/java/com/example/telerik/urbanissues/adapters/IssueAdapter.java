@@ -41,12 +41,12 @@ public class IssueAdapter extends ArrayAdapter<Issue> {
         IssueHolder holder = null;
 
         if (row == null) {
-            //LayoutInflater inflater = ((Activity) context).getLayoutInflater();
+            // LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new IssueHolder();
             //holder.issueImage = (ImageView) row.findViewById(R.id.issue_image);
-            holder.issueText = (TextView) row.findViewById(R.id.issue_desription);
+            holder.issueText = (TextView) row.findViewById(R.id.issue_description);
             //holder.username = (TextView) row.findViewById(R.id.issue_username);
             holder.issueTitle = (TextView) row.findViewById(R.id.issue_title);
 

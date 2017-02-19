@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "User Not Logged In", Toast.LENGTH_LONG).show();
             }
         } else {
-            Intent intent_issues = new Intent(MainActivity.this, IssuesActivity.class);
+            Intent intent_issues = new Intent(MainActivity.this, ListIssuesActivity.class);
             intent_issues.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent_issues.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); // clears all previous activities task
             finish(); // destroy current activity..

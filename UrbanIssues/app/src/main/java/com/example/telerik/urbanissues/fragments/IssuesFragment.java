@@ -42,31 +42,31 @@ public class IssuesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //super.onActivityCreated(savedInstanceState);
+        super.onCreate(savedInstanceState);
         initializeSdk();
         View rootView = inflater.inflate(R.layout.fragment_issues_list, container, false);
-        /*
+
         ListView listView = (ListView) rootView.findViewById(R.id.list);
 
         this.issues = new ArrayList<Issue>();
 
-        System.out.println("Activity " + this.getListView());
+        System.out.println("Activity " + this.getActivity());
         System.out.println("Layout " + R.layout.fragment_issues_row);
         this.loadIssues(listView, this);
         System.out.println("Issues " + issues);
 
         this.issueAdapter = new IssueAdapter(this.getActivity(), R.layout.fragment_issues_row, issues);
 
-        this.getListView().setAdapter(issueAdapter);
+        listView.setAdapter(issueAdapter);
 
         this.loadIssues(listView, this);
-
+        System.out.println("Issues " + issues);
         System.out.println("++++++++++++ PRINTING ISSUES:");
         for (Issue issue : issues) {
             System.out.println(issue);
         }
 
-    */
+
         return rootView;
     }
 
