@@ -15,20 +15,15 @@ import android.widget.Toast;
 import com.example.telerik.urbanissues.R;
 import com.example.telerik.urbanissues.models.BaseViewModel;
 import com.example.telerik.urbanissues.models.MyUser;
-import com.telerik.everlive.sdk.core.EverliveApp;
-import com.telerik.everlive.sdk.core.EverliveAppSettings;
 import com.telerik.everlive.sdk.core.model.system.User;
 import com.telerik.everlive.sdk.core.query.definition.UserSecretInfo;
 import com.telerik.everlive.sdk.core.result.RequestResult;
 import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 
-import static com.example.telerik.urbanissues.common.Constants.APP_ID;
 
 public class RegisterActivity  extends Activity implements View.OnClickListener {
 
     private Boolean exit = false;
-
-    EverliveApp myApp;
 
     private EditText name;
     private EditText email;
@@ -64,7 +59,7 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_register : {
-                this.initializeSdk();
+                BaseViewModel.initialize(BaseViewModel.urbanIssuesApp);
                 this.onRegisterClick();
                 break;
             }
@@ -110,7 +105,7 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
         UserSecretInfo secretInfo = new UserSecretInfo();
         secretInfo.setPassword(password.getText().toString());
 
-        myApp.workWith().
+        BaseViewModel.urbanIssuesApp.workWith().
                 users(MyUser.class).
                 create(user, secretInfo).
                 executeAsync(new RequestResultCallbackAction() {
@@ -173,14 +168,5 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
         public void afterTextChanged(Editable s) {
             updateRegisterButton();
         }
-    }
-
-    private void initializeSdk() {
-        String appId = APP_ID;
-        EverliveAppSettings appSettings = new EverliveAppSettings();
-        appSettings.setAppId(appId);
-        appSettings.setUseHttps(true);
-
-        myApp = new EverliveApp(appSettings);
     }
 }

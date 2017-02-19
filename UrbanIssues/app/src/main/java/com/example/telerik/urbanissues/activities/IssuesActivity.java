@@ -6,35 +6,17 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.telerik.urbanissues.R;
 import com.example.telerik.urbanissues.adapters.TabsPagerAdapter;
-import com.example.telerik.urbanissues.models.Issue;
-import com.example.telerik.urbanissues.adapters.IssueAdapter;
+import com.example.telerik.urbanissues.models.BaseViewModel;
 import com.telerik.everlive.sdk.core.EverliveApp;
 import com.telerik.everlive.sdk.core.EverliveAppSettings;
-import com.telerik.everlive.sdk.core.model.system.AccessToken;
-import com.telerik.everlive.sdk.core.result.RequestResult;
-
-import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
-
-import java.util.ArrayList;
-
-import static com.example.telerik.urbanissues.common.Constants.APP_ID;
 
 public class IssuesActivity extends AppCompatActivity implements ActionBar.TabListener {
 
     private Boolean exit = false;
-
-    public EverliveApp myApp;
 
     private ViewPager viewPager;
     private TabsPagerAdapter mAdapter;
@@ -47,7 +29,7 @@ public class IssuesActivity extends AppCompatActivity implements ActionBar.TabLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initializeSdk();
+        //BaseViewModel.initialize(BaseViewModel.urbanIssuesApp);
 
         // Initilization
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -116,14 +98,5 @@ public class IssuesActivity extends AppCompatActivity implements ActionBar.TabLi
     @Override
     public void onTabReselected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {
 
-    }
-
-    private void initializeSdk() {
-        String appId = APP_ID;
-        EverliveAppSettings appSettings = new EverliveAppSettings();
-        appSettings.setAppId(appId);
-        appSettings.setUseHttps(true);
-
-        myApp = new EverliveApp(appSettings);
     }
 }

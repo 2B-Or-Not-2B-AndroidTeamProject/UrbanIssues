@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import com.example.telerik.urbanissues.R;
 import com.example.telerik.urbanissues.adapters.IssueAdapter;
+import com.example.telerik.urbanissues.models.BaseViewModel;
 import com.example.telerik.urbanissues.models.Issue;
 import com.telerik.everlive.sdk.core.EverliveApp;
 import com.telerik.everlive.sdk.core.EverliveAppSettings;
@@ -25,8 +26,6 @@ import java.util.ArrayList;
 import static com.example.telerik.urbanissues.common.Constants.APP_ID;
 
 public class IssuesFragment extends Fragment {
-
-    EverliveApp myApp;
 
     private ArrayList<Issue> issues;
     private IssueAdapter issueAdapter;
@@ -43,9 +42,11 @@ public class IssuesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initializeSdk();
-        View rootView = inflater.inflate(R.layout.fragment_issues_list, container, false);
 
+        BaseViewModel.initialize(BaseViewModel.urbanIssuesApp);
+
+        View rootView = inflater.inflate(R.layout.fragment_issues_list, container, false);
+/*
         ListView listView = (ListView) rootView.findViewById(R.id.list);
 
         this.issues = new ArrayList<Issue>();
@@ -65,44 +66,13 @@ public class IssuesFragment extends Fragment {
         for (Issue issue : issues) {
             System.out.println(issue);
         }
-
+*/
 
         return rootView;
     }
 
-    private void initializeSdk() {
-        String appId = APP_ID;
-        EverliveAppSettings appSettings = new EverliveAppSettings();
-        appSettings.setAppId(appId);
-        appSettings.setUseHttps(true);
-
-        myApp = new EverliveApp(appSettings);
-    }
-
-    public ArrayList<Issue> getIssuesFromDb() {
-        final ArrayList<Issue> issues = new ArrayList<Issue>();
-        myApp.workWith().data(Issue.class).getAll().executeAsync(new RequestResultCallbackAction<ArrayList<Issue>>() {
-            @Override
-            public void invoke(RequestResult<ArrayList<Issue>> requestResult) {
-                if (requestResult.getSuccess()) {
-                    for (Issue res : requestResult.getValue()) {
-                        Issue currentIssue = new Issue();
-                        currentIssue.setTitle(res.getTitle());
-                        currentIssue.setDescription(res.getDescription());
-                        //issues.add(res);
-                        issues.add(currentIssue);
-                        //System.out.println("===== Success: " + res.getTitle() + " " + res.getDescription());
-                    }
-                } else {
-                    //System.out.println("===== Error: " + requestResult.getError().toString());
-                }
-            }
-        });
-        return issues;
-    }
-
     private void loadIssues(final ListView target, final IssuesFragment issuesFragment) {
-        myApp.workWith().
+        BaseViewModel.urbanIssuesApp.workWith().
                 data(Issue.class).
                 getAll().
                 executeAsync(new RequestResultCallbackAction<ArrayList<Issue>>() {

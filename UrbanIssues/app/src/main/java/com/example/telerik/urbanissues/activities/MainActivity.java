@@ -7,10 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.example.telerik.urbanissues.R;
-import com.example.telerik.urbanissues.models.Issue;
+import com.example.telerik.urbanissues.models.BaseViewModel;
 
-import com.telerik.everlive.sdk.core.EverliveApp;
-import com.telerik.everlive.sdk.core.EverliveAppSettings;
 import com.telerik.everlive.sdk.core.model.system.AccessToken;
 import com.telerik.everlive.sdk.core.result.RequestResult;
 import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
@@ -24,15 +22,12 @@ public class MainActivity extends AppCompatActivity {
 
     private Boolean exit = false;
 
-    public EverliveApp myApp;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initializeSdk();
-       // getAllEntries();
+        BaseViewModel.initialize(BaseViewModel.urbanIssuesApp);
 
         Boolean isUserRegistered = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                 .getBoolean("isUserRegistered", false);
@@ -59,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (sp_username != "" && sp_password != "") {
-                myApp.workWith().
+                BaseViewModel.urbanIssuesApp.workWith().
                         authentication().
                         login(sp_username, sp_password).
                         executeAsync(new RequestResultCallbackAction<AccessToken>() {
@@ -83,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "User Not Logged In", Toast.LENGTH_LONG).show();
             }
         } else {
-            Intent intent_issues = new Intent(MainActivity.this, ListIssuesActivity.class);
+            Intent intent_issues = new Intent(MainActivity.this, IssuesActivity.class);
             intent_issues.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             intent_issues.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK); // clears all previous activities task
             finish(); // destroy current activity..
@@ -106,30 +101,5 @@ public class MainActivity extends AppCompatActivity {
                 }
             }, 3 * 1000);
         }
-    }
-
-    private void initializeSdk() {
-        String appId = APP_ID;
-        EverliveAppSettings appSettings = new EverliveAppSettings();
-        appSettings.setAppId(appId);
-        appSettings.setUseHttps(true);
-
-        myApp = new EverliveApp(appSettings);
-    }
-
-    public void getAllEntries() {
-        myApp.workWith().data(Issue.class).getAll().executeAsync(new RequestResultCallbackAction<ArrayList<Issue>>() {
-
-            @Override
-            public void invoke(RequestResult<ArrayList<Issue>> requestResult) {
-                if (requestResult.getSuccess()) {
-                    for (Issue res : requestResult.getValue()) {
-                        System.out.println("===== Success: " + res.getTitle() + " " + res.getDescription());
-                    }
-                } else {
-                    System.out.println("===== Error Main: " + requestResult.getError().toString());
-                }
-            }
-        });
     }
 }

@@ -9,8 +9,10 @@ import com.telerik.everlive.sdk.core.model.system.User;
 import java.util.Hashtable;
 import java.util.UUID;
 
+import static com.example.telerik.urbanissues.common.Constants.APP_ID;
+
 public class BaseViewModel {
-    public static EverliveApp myAppTest;
+    public static EverliveApp urbanIssuesApp;
 
     private Hashtable<UUID, Bitmap> pictures = new Hashtable<UUID, Bitmap>();
     private Hashtable<UUID, User> users = new Hashtable<UUID, User>();
@@ -51,24 +53,19 @@ public class BaseViewModel {
         this.selectedAccount = selectedAccount;
     }
 
-    private BaseViewModel() {
-        initialize();
-    }
-
     public static BaseViewModel getInstance() {
         if (instance == null) {
             instance = new BaseViewModel();
-            initialize();
         }
         return instance;
     }
 
-    private static void initialize() {
-        String appId = "tmieglwbnjbr358i";
+    public static void initialize(EverliveApp app) {
+        String appId = APP_ID;
         EverliveAppSettings appSettings = new EverliveAppSettings();
         appSettings.setAppId(appId);
         appSettings.setUseHttps(true);
 
-        myAppTest = new EverliveApp(appSettings);
+        app = new EverliveApp(appSettings);
     }
 }

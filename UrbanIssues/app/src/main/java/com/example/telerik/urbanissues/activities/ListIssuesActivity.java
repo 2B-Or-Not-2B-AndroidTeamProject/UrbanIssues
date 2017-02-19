@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import com.example.telerik.urbanissues.R;
 import com.example.telerik.urbanissues.adapters.IssueAdapter;
+import com.example.telerik.urbanissues.models.BaseViewModel;
 import com.example.telerik.urbanissues.models.Issue;
 import com.telerik.everlive.sdk.core.EverliveApp;
 import com.telerik.everlive.sdk.core.EverliveAppSettings;
@@ -23,11 +24,7 @@ import com.telerik.everlive.sdk.core.result.RequestResultCallbackAction;
 
 import java.util.ArrayList;
 
-import static com.example.telerik.urbanissues.common.Constants.APP_ID;
-
 public class ListIssuesActivity extends AppCompatActivity {
-
-    EverliveApp myApp;
 
     private ArrayList<Issue> issues;
     private IssueAdapter issueAdapter;
@@ -45,7 +42,7 @@ public class ListIssuesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_issues_list);
 
-        initializeSdk();
+        BaseViewModel.initialize(BaseViewModel.urbanIssuesApp);
 
         //ListView listView = (ListView) findViewById(R.id.list);
         //this.issueAdapter = new IssueAdapter(this, R.layout.fragment_issues, issues);
@@ -54,7 +51,7 @@ public class ListIssuesActivity extends AppCompatActivity {
 
         this.issues = new ArrayList<>();
 
-        issues = GetIssues(myApp);
+        issues = GetIssues(BaseViewModel.urbanIssuesApp);
         if (this.getIssues() == null) {
             System.out.println("WTF");
         }
@@ -74,14 +71,5 @@ public class ListIssuesActivity extends AppCompatActivity {
         SortingDefinition sortAsc = new SortingDefinition("CreatedAt", SortDirection.Ascending);
         RequestResult<ArrayList<Issue>> requestResult = app.workWith().data(Issue.class).get().sort(sortAsc).executeSync();
         return requestResult.getSuccess() ? requestResult.getValue() : null;
-    }
-
-    private void initializeSdk() {
-        String appId = APP_ID;
-        EverliveAppSettings appSettings = new EverliveAppSettings();
-        appSettings.setAppId(appId);
-        //appSettings.setUseHttps(true);
-
-        myApp = new EverliveApp(appSettings);
     }
 }

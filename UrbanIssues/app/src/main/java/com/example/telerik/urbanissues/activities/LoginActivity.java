@@ -33,7 +33,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        this.checkAppSettings(getIntent().getAction() != null);
+        BaseViewModel.initialize(BaseViewModel.urbanIssuesApp);
 
         connectionProgressDialog = new ProgressDialog(this);
         connectionProgressDialog.setMessage("Logging in ...");
@@ -80,17 +80,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    private void checkAppSettings(boolean showMessage) {
-        StringBuilder sb = new StringBuilder();
-        String EOL = "\r\n";
-
-        if (APP_ID != null && APP_ID.equals("your Telerik App ID")) {
-            sb.append("Telerik App ID is not set." + EOL);
-        } else {
-            BaseViewModel.myAppTest = new EverliveApp(APP_ID);
-        }
-    }
-
     public static void showAlertMessage(Context context, String message, DialogInterface.OnClickListener listener) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
         alertDialogBuilder.setMessage(message);
@@ -102,7 +91,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
     public void onLogin() {
         connectionProgressDialog.show();
-        BaseViewModel.myAppTest.workWith().
+        BaseViewModel.urbanIssuesApp.workWith().
                 authentication().
                 login(this.username.getText().toString(), this.password.getText().toString()).
                 executeAsync(new RequestResultCallbackAction<AccessToken>(){
