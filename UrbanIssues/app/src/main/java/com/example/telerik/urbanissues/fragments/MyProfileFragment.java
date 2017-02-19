@@ -38,9 +38,9 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener{
         return rootView;
     }
 
-    private void updateUI(View view){
-
+    private void updateUI(final View view){
         final MyUser loggedUser = BaseViewModel.getInstance().getLoggedUser();
+        System.out.println("loggedUser " + loggedUser);
         if (loggedUser == null) {
            urbanIssuesApp.workWith().
                     users(MyUser.class).
@@ -49,8 +49,15 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener{
                         @Override
                         public void invoke(RequestResult<MyUser> requestResult) {
                             if (requestResult.getSuccess()) {
-                                MyUser loggedUser = requestResult.getValue();
-                                BaseViewModel.getInstance().setLoggedUser(loggedUser);
+                                MyUser logUser = requestResult.getValue();
+                                BaseViewModel.getInstance().setLoggedUser(logUser);
+
+                                BitmapDownloadTask task = new BitmapDownloadTask(view.getContext(), (ImageView) view.findViewById(R.id.profile_picture), ImageKind.User);
+                                task.execute(logUser != null ? logUser.getPictureId().toString() : null);
+                                System.out.println("loggedUser image id" + logUser.getPictureId());
+
+                                ((TextView) view.findViewById(R.id.profile_username)).setText(logUser.getUsername());
+                                System.out.println("loggedUser username" + logUser.getUsername());
 
                                 MyProfileFragment.this.updatePictureButton.post(new Runnable() {
                                     @Override
@@ -59,20 +66,23 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener{
                                     }
                                 });
                             }
+                            else {
+                                System.out.println("===== Error: " + requestResult.getError().getMessage() + " " + requestResult.getError().getCode());
+                            }
                         }
                     });
         } else {
             this.updatePictureButton.post(new Runnable() {
                 @Override
                 public void run() {
+                    BitmapDownloadTask task = new BitmapDownloadTask(view.getContext(), (ImageView) view.findViewById(R.id.profile_picture), ImageKind.User);
+                    task.execute(loggedUser.getPictureId() != null ? loggedUser.getPictureId().toString() : null);
+
+                    ((TextView) view.findViewById(R.id.profile_username)).setText(loggedUser.getUsername());
                     updatePictureButton.setVisibility(View.VISIBLE);
                 }
             });
         }
-        BitmapDownloadTask task = new BitmapDownloadTask(view.getContext(), (ImageView) view.findViewById(R.id.profile_picture), ImageKind.User);
-        task.execute(loggedUser.getPictureId() != null ? loggedUser.getPictureId().toString() : null);
-
-        ((TextView) view.findViewById(R.id.profile_username)).setText(loggedUser.getUsername());
     }
 
     @Override

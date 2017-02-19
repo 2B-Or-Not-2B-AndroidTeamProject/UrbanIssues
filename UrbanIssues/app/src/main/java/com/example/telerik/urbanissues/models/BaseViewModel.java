@@ -53,6 +53,9 @@ public class BaseViewModel {
         this.selectedAccount = selectedAccount;
     }
 
+    private BaseViewModel() {
+    }
+
     public static BaseViewModel getInstance() {
         if (instance == null) {
             instance = new BaseViewModel();

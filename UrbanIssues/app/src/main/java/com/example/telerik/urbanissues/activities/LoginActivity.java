@@ -106,7 +106,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                                     .putString("username", username.getText().toString()).commit();
                             getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
                                     .putString("password", password.getText().toString()).commit();
+                            System.out.println("//////// LOGIN " + accessTokenRequestResult.getValue());
                             LoginActivity.startMainActivity(LoginActivity.this);
+
                         }
                         else {
                             final String errorMessage = accessTokenRequestResult.getError().getMessage();
