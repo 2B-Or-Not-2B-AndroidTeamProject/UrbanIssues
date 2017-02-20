@@ -1,14 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/fragment_submit_issue"
-    android:orientation="vertical">
+    android:background="#34495e"
+    android:orientation="vertical"
+    android:weightSum="1">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/cnu_basicElementsContainer"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:textSize="22sp"
-        android:text="Here we should be able to submit an issue" />
-</LinearLayout>
+        android:layout_below="@id/cnu_signUpLabel"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:orientation="horizontal"
+            android:id="@+id/linearLayout2"
+            android:layout_gravity="bottom"
+            android:layout_height="fill_parent">
+
+
+            <ImageButton
+                android:contentDescription="@null"
+                android:src="@mipmap/ic_camera"
+                android:layout_weight="1"
+                android:height="14dp"
+                android:textSize="15sp"
+                android:textColor="#ffffff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/image_button_create_issue_camera"
+                android:layout_gravity="bottom">
+            </ImageButton>
+
+
+            <ImageButton
+                android:contentDescription="@null"
+                android:src="@mipmap/ic_gallery"
+                android:layout_weight="1"
+                android:height="14dp"
+                android:textSize="15sp"
+                android:textColor="#ffffff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/image_button_create_issue_gallery"
+                android:layout_gravity="bottom">
+            </ImageButton>
+
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/edit_text_create_issue_title"
+            android:background="#FFFFFF"
+            android:textColorHint="#42000000"
+            android:textColor="#000000"
+            android:padding="12dp"
+            android:hint="@string/create_issue_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:layout_marginTop="5dp" />
+        <EditText
+            android:id="@+id/edit_text_create_issue_description"
+            android:background="#FFFFFF"
+            android:textColorHint="#42000000"
+            android:textColor="#000000"
+            android:padding="12dp"
+            android:hint="@string/create_issue_description"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|start"
+            android:minLines="3"
+            android:scrollHorizontally="false"
+            android:scrollbars="vertical"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:layout_marginTop="1dp"/>
+
+
+        <Spinner
+            android:id="@+id/spinner_create_issue_categories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown" />
+
+
+        <Button
+            android:id="@+id/button_create_issue_submit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="@string/create_issue_submit"
+            android:background="#16a086"
+            android:enabled="false"/>
+    </LinearLayout>
+</RelativeLayout>

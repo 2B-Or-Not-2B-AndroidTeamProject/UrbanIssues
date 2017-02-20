@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Urban Issues</string>
     <string name="action_settings">Settings</string>
+
+    <string name="create_issue_title">Title</string>
+    <string name="create_issue_description">Description</string>
+    <string name="create_issue_submit">Submit</string>
 </resources>
 
